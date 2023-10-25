@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import RestaurantCard from '../RestaurantCard/RestaurantCard';
 
 import { client as sanityClient } from '../../sanity';
-console.log({sanityClient})
+
 const FeaturedRow = ({ id, title, description }) => {
     const [restaurants, setRestaurants] = useState([]);
 
@@ -14,10 +14,9 @@ const FeaturedRow = ({ id, title, description }) => {
           }
         `).then((data) => {
             setRestaurants(data);
-            
         })
     },[])
-    console.log(restaurants[0])
+    //console.log(restaurants[0])
 
     return (
         <View className='pt-3 bg-gray-200'>
@@ -39,7 +38,7 @@ const FeaturedRow = ({ id, title, description }) => {
             >
                {
                     restaurants[0] &&
-                    restaurants.map((restaurant) => {
+                    restaurants.map((restaurant, index) => {
                         return(
                             <RestaurantCard 
                                 name={restaurant.name}
@@ -47,6 +46,7 @@ const FeaturedRow = ({ id, title, description }) => {
                                 address={restaurant.address}
                                 imageUrl={restaurant.image}
                                 categories={restaurant.categories}
+                                key={index}
                             />
                         )
                     })

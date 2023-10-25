@@ -5,14 +5,14 @@ import { urlFor } from '../../sanity';
 
 const RestaurantCard = ({ name, rating, address, imageUrl, categories }) => {
     const image = urlFor(imageUrl).width(350).url();
-    console.log({image})
+    //console.log({image})
     return (
-        <TouchableOpacity className='bg-white rounded m-2'>
+        <TouchableOpacity className='bg-white rounded-md m-2'>
             <Image 
                 source={{
                     uri: image,
                 }}
-                className='h-28 w-60 rounded-t'
+                className='h-28 w-60 rounded-t-md'
             />
             <View className='py-3 px-3'>
                 <Text className='font-bold text-md pb-1'>{name}</Text>

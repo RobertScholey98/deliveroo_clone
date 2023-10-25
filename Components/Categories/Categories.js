@@ -1,9 +1,17 @@
 import { View, Text, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CategoryCard from './CategoryCard';
 
-const Categories = () => {
+const Categories = ({ categories }) => {
+    
+    const [dataLoaded, setDataLoaded] = useState(false);
+
+    useEffect(() => {
+        if(categories[0]?.title) {
+            setDataLoaded(true);
+        }
+    },[categories]);
 
     return (
         <ScrollView
@@ -12,20 +20,12 @@ const Categories = () => {
                 paddingHorizontal: 15,
                 paddingTop: 10,
             }}
+            className='bg-gray-200'
             showsHorizontalScrollIndicator={false}
         >
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
-            <CategoryCard imgUrl='https://links.papareact.com/wru'/>
+            {   dataLoaded &&
+                categories.map((category) => <CategoryCard title={category.title} image={category.image} />)
+            }
         </ScrollView>
     )
 }

@@ -6,7 +6,7 @@ import {
     TextInput,
     ScrollView
 } from 'react-native';
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { 
     AdjustmentsVerticalIcon,
@@ -18,14 +18,48 @@ import {
 import Categories from '../Components/Categories/Categories'
 import FeaturedRow from '../Components/FeaturedRow/FeaturedRow';
 
+import { client as sanityClient } from '../sanity';
+
 const HomeScreen = () => {
     const navigation = useNavigation();
+
+    const [featuredCategories, setFeaturedCategories] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
         })
     }, []);
+
+    useEffect(() => {
+        sanityClient.fetch(`
+            *[_type == 'featuredCategories'] {
+                name,
+                description,
+                'restaurants': restaurants[]->{
+                    title,
+                    image,
+                    street,
+                    town,
+                    rating,
+                    categories
+                }
+            }
+        `).then((data) => {
+            setFeaturedCategories(data);
+        });
+        sanityClient.fetch(`
+            *[_type == 'category'] {
+                title,
+                image
+            }
+        `).then((data) => {
+            setCategories(data);
+        });
+    },[])
+
+    //console.log({featuredCategories, categories})
 
     return (
         <SafeAreaView className='bg-white p5'>
@@ -66,12 +100,12 @@ const HomeScreen = () => {
             {/*searchBox*/}
             {/*body*/}
             <ScrollView 
-                className='bg-gray-100 pt-2'
+                className='bg-gray-200 pt-2'
                 contentContainerStyle={{
                     paddingBottom: 100,
                 }}
             >
-                <Categories />
+                <Categories categories={categories}/>
                 <FeaturedRow
                     id={0}
                     title='Featured'

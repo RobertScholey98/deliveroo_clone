@@ -1,13 +1,5 @@
 import {defineField, defineType} from 'sanity'
 
-type Title = string;
-
-type Address = {
-  nameNum: string | number;
-  street: string;
-  postcode: string;
-};
-
 export default defineType({
   name: 'restaurant',
   title: 'Restaurant',
@@ -52,7 +44,22 @@ export default defineType({
       name: 'dishes',
       title: 'Dishes',
       type: 'array',
-      of: [{type: 'reference', to: {type: 'dish'}}],
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'dish',
+              type: 'reference',
+              to: [{ type: 'dish' }],
+            },
+            {
+              name: 'price',
+              type: 'number',
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'rating',
